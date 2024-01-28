@@ -17,6 +17,8 @@ export default function GameBoard({ onSelectSquare, turns }) {
         initialGameBoard[square.rowIndex][square.colIndex] = player;
     }
 
+    // Note: we used to have this, where the gameboard tracked the current system state
+
 
     // const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
