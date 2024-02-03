@@ -1,15 +1,17 @@
 import { useState } from "react"
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({ initialName, symbol, isActive, onChangeName }) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [playerName, setPlayerName] = useState(initialName);
 
     function handleEditSaveClick() {
-        // pass a function, so it's scheduled
-        setIsEditing(editing => !editing);
-        // save the player name
-        if (!isEditing) {
+        // save the player name, if done editing (previou stated was editing)
+        if (isEditing) {
+            onChangeName(symbol, playerName)
         }
+        // pass a function, so it's scheduled
+        setIsEditing((editing) => !editing);
+
     }
 
     function userNameTextChanged(event) {

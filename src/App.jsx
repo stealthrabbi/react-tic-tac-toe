@@ -23,9 +23,15 @@ function deriveActivePlayer(gameTurns) {
 
 
 function App() {
+  const [players, setPlayers] = useState({
+    'X': 'Player 1 zzz',
+    'O': 'Player 2'
+  });
   const [gameTurns, setGameTurns] = useState([]);
 
   const activePlayer = deriveActivePlayer(gameTurns);
+
+  console.info("In App()");
 
   // set the game boare state based on the turn history
   // deep the board so initialGameBoard never gets written to
@@ -44,7 +50,7 @@ function App() {
 
     // if the gameboard has the 3 winning combinations equal to the same character (and not null), then we have a winner
     if (firstSymbol && firstSymbol === secondSymbol && firstSymbol === thirdSymbol) {
-      winner = firstSymbol;
+      winner = players[firstSymbol];
     }
   }
   // check if it's a draw. We need to show a gameover screen then.
@@ -54,6 +60,15 @@ function App() {
   function handleReset() {
     console.info("resetting game!");
     setGameTurns([]);
+  }
+
+  function handlePlayerNameChange(symbol, newName) {
+    console.info(`Changed ${symbol} player to ${newName}`)
+    setPlayers(prevPlayers => {
+      return {
+        ...prevPlayers, [symbol]: newName
+      }
+    })
   }
 
   function handleSelectSquare(rowIndex, colIndex) {
@@ -70,8 +85,8 @@ function App() {
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player initialName="Player-1" symbol="X" isActive={activePlayer === "X"} />
-          <Player initialName="Player-2" symbol="0" isActive={activePlayer === "O"} />
+          <Player initialName="Player-1" symbol="X" isActive={activePlayer === "X"} onChangeName={handlePlayerNameChange} />
+          <Player initialName="Player-2" symbol="O" isActive={activePlayer === "O"} onChangeName={handlePlayerNameChange} />
         </ol>
         {/* The GameOver component will be hidden upon reset, since there is no winner/draw condition */}
         {(winner || hasDraw) && <GameOver winner={winner} onRematchClicked={handleReset} />}
